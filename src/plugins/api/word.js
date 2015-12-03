@@ -100,10 +100,10 @@ export default function root(server) {
 
     server.methods.Word.findOne({ word: word })
       .then(words => {
-        if (announced_user) {
-          words.announced_user = announced_user
-        }
-        reply(words);
+        reply({
+          words: words,
+          winner: announced_user
+        });
       }, err => {
         logger.error(err);
         reply(Boom.badImplementation());
