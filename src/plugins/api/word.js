@@ -25,7 +25,6 @@ export default function root(server) {
     const found_words = search_terms.map(testWord)
 
     function testWord(search_term) {
-      console.log('testing')
       if (search_term.regex.test(text)){
         console.log('found', search_term.name)
         saveWord(search_term.name)
@@ -44,7 +43,6 @@ export default function root(server) {
         .then(result => { console.log(result) }, 
               err => { console.log(err) })
       if (!announced_user) {
-        console.log(announced_user)
         announced_user = getUserDetails(user_id)
       }
     }
@@ -98,6 +96,7 @@ export default function root(server) {
   function get(request, reply) {
     const word = request.params.word;
     console.log('new request to get:', word)
+          console.log(announced_user, 'ANNOUNCE')
 
     server.methods.Word.findOne({ word: word })
       .then(words => {
