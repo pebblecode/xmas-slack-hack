@@ -9,12 +9,12 @@ export default function root(server) {
     const text = request.payload.text
     console.log('new slackpost', text)
 
-    search_terms = [{
+    const search_terms = [{
       regex: /xmas|crimbo|festive|merry|festive|jolly|christmas/i,
       name: 'christmas'
     }]
 
-    const found_words = search_terms.map(testWord).map(saveWord)
+    const found_words = search_terms.map(testWord)
 
     function testWord(search_term) {
       console.log('testing')
@@ -25,7 +25,18 @@ export default function root(server) {
     }
 
     function saveWord(name) {
-      const new_word = new server.methods.Word({word:word})
+      server.methods.Word.findOneAndUpdate({word:name}, 
+        {
+          $inc: { count:1 }
+        }, { 
+          upsert: true
+        })
+        .then(result => {
+                console.log(result)
+              }, err => {
+                console.log(err)
+              })
+      const new_word = new server.methods.Word({word:name})
       console.log('saving', new_word)
       new_word.save().then(result => {
         console.log(result)
