@@ -1,12 +1,17 @@
 import Boom from 'boom';
 import debug from 'debug';
+import reqp from 'request-promise';
+import *  as secret from '../../../secret.json';
 
 const logger = debug('word');
+
+let announced_user = false;
 
 export default function root(server) {
 
   function slackpost(request, reply) {
     const text = request.payload.text
+    const user_id = request.payload.user_id
     console.log('new slackpost', text)
 
     const search_terms = [{
@@ -22,35 +27,42 @@ export default function root(server) {
     function testWord(search_term) {
       console.log('testing')
       if (search_term.regex.test(text)){
-        console.log('found!')
+        console.log('found', search_term.name)
         saveWord(search_term.name)
       }
     }
 
     function saveWord(name) {
-      server.methods.Word.findOneAndUpdate({word:name}, 
+      server.methods.Word.findOneAndUpdate(
         {
+          word:name
+        }, {
           $inc: { count:1 }
         }, { 
           upsert: true
         })
-        .then(result => {
-                console.log(result)
-              }, err => {
-                console.log(err)
-              })
-      const new_word = new server.methods.Word({word:name})
-      console.log('saving', new_word)
-      new_word.save().then(result => {
-        console.log(result)
-      }, err => {
-        console.log(err)
-      })
+        .then(result => { console.log(result) }, 
+              err => { console.log(err) })
+      announced_user = getUserDetails(user_id)
     }
 
     reply()
   }
 
+  function getUserDetails(user_id) {
+    const params = {
+      uri: 'https://slack.com/api/users.info',
+      method: 'POST',
+      json: true,
+      form: {
+        token: secret.token,
+        user: user_id
+      }
+    }
+    reqp(params).then(reply => {
+      announced_user = reply
+    })
+  }
 
   function post(request, reply) {
     const word = request.payload.word;
@@ -70,6 +82,10 @@ export default function root(server) {
 
     server.methods.Word.find({})
       .then(words => {
+        if (announced_user) {
+          words.announced_user = announced_user
+          announced_user = false
+        }
         reply(words);
       }, err => {
         logger.error(err);
@@ -83,6 +99,10 @@ export default function root(server) {
 
     server.methods.Word.find({ word: word })
       .then(words => {
+        if (announced_user) {
+          words.announced_user = announced_user
+          announced_user = false
+        }
         reply(words);
       }, err => {
         logger.error(err);

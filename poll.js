@@ -3,7 +3,8 @@ function fetchData(){
   $.get('http://theguardianhivemind.com:5555/api/word', function(arr) {
     arr.map(function(i){
       if (i.word === 'christmas') {
-        $('#christocount').text(i.count)
+        var num = -180 + (i.count * 6)
+        document.getElementByClassName('needle')[0].style.transform = num + 'deg'
       }
     })
   })
