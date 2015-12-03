@@ -5,9 +5,9 @@ import *  as secret from '../../../secret.json';
 
 const logger = debug('word');
 
-let announced_user = false;
-
 export default function root(server) {
+
+  let announced_user
 
   function slackpost(request, reply) {
     const text = request.payload.text
