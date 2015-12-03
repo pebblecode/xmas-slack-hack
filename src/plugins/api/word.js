@@ -44,6 +44,7 @@ export default function root(server) {
         .then(result => { console.log(result) }, 
               err => { console.log(err) })
       if (!announced_user) {
+        console.log(announced_user)
         announced_user = getUserDetails(user_id)
       }
     }
