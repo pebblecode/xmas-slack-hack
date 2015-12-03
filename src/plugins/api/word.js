@@ -98,7 +98,7 @@ export default function root(server) {
     const word = request.params.word;
     console.log('new request to get:', word)
 
-    server.methods.Word.find({ word: word })
+    server.methods.Word.findOne({ word: word })
       .then(words => {
         if (announced_user) {
           words.announced_user = announced_user
