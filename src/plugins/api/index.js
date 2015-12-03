@@ -4,8 +4,8 @@ export default function register(server, options, next) {
 
   server.route({
     method: 'POST',
-    path: '/word/{word}',
-    handler: word.post
+    path: '/slackpost',
+    handler: word.slackpost
   });
 
   server.route({
@@ -16,11 +16,8 @@ export default function register(server, options, next) {
 
   server.route({
     method: 'GET',
-    path: '/test/',
-    handler: function(req, reply) {
-      console.log(req);
-      reply(400);
-    }
+    path: '/word/{word}',
+    handler: word.get
   });
 
   next();
