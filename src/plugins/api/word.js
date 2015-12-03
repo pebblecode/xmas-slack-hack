@@ -12,6 +12,9 @@ export default function root(server) {
     const search_terms = [{
       regex: /xmas|crimbo|festive|merry|festive|jolly|christmas/i,
       name: 'christmas'
+    },{
+      regex: /beer/i,
+      name: 'beer'
     }]
 
     const found_words = search_terms.map(testWord)
