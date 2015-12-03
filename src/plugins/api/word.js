@@ -78,6 +78,7 @@ export default function root(server) {
 
 
   return {
+    slackpost,
     post,
     get,
     getAll
