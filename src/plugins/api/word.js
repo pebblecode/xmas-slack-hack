@@ -43,7 +43,9 @@ export default function root(server) {
         })
         .then(result => { console.log(result) }, 
               err => { console.log(err) })
-      announced_user = getUserDetails(user_id)
+      if (!announced_user) {
+        announced_user = getUserDetails(user_id)
+      }
     }
 
     reply()
@@ -84,7 +86,6 @@ export default function root(server) {
       .then(words => {
         if (announced_user) {
           words.announced_user = announced_user
-          announced_user = false
         }
         reply(words);
       }, err => {
@@ -101,7 +102,6 @@ export default function root(server) {
       .then(words => {
         if (announced_user) {
           words.announced_user = announced_user
-          announced_user = false
         }
         reply(words);
       }, err => {
