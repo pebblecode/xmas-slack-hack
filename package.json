@@ -1,0 +1,56 @@
+{
+  "name": "node-starter-kit",
+  "version": "0.5.0",
+  "description": "A simple node starter kit ",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pebblecode/node-starter-kit.git"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "compile": "babel --source-maps --out-dir lib/ src/",
+    "lint": "eslint --ext .js --ext .jsx ./ && echo No linting errors.",
+    "test": "node_modules/.bin/mocha test/ --recursive --compilers js:babel/register && npm run lint",
+    "test:watch": "node_modules/.bin/mocha test/ --recursive --compilers js:babel/register -- --watch",
+    "normalise": "node_modules/.bin/mocha import.js --compilers js:babel/register",
+    "coverage": "node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel/register --colors --reporter dot test/",
+    "prepublish": "npm run compile",
+    "postinstall": "npm run compile",
+    "dev": "nodemon --exec babel-node -- src/index.js",
+    "dev:debug": "babel-node-debug src/index.js",
+    "import": "mongoimport --jsonArray --db cruk --file output.json --collection ccgs",
+    "import-live": "mongoimport -h ds055584.mongolab.com:55584 -d heroku_9rvwxmvz -c ccgs -u heroku_9rvwxmvz -p 4n361h6g6amq8t21kimh27nt0u --file output.json --jsonArray",
+    "start": "node lib/index.js"
+  },
+  "keywords": [],
+  "author": {
+    "name": "PebbleCode",
+    "email": "opensource@pebblecode.com",
+    "url": "http://pebblecode.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "boom": "^3.0.0",
+    "debug": "^2.2.0",
+    "glue": "^2.4.0",
+    "lodash": "^3.10.1",
+    "map-obj": "^1.0.1",
+    "mongoose": "^4.2.6",
+    "babel": "^5.8.34",
+    "babel-eslint": "^4.1.5",
+    "camelcase": "^2.0.1",
+    "chai": "^2.1.1",
+    "commander": "^2.9.0",
+    "eslint": "^1.9.0",
+    "eslint-config-pebblecode": "^1.0.0",
+    "eslint-plugin-react": "^3.8.0",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.2.1",
+    "nodemon": "^1.8.1",
+    "pre-commit": "^1.0.6"
+  },
+  "engines": {
+    "node": "4.x.x",
+    "npm": "2.x.x"
+  }
+}
