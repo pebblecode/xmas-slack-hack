@@ -1,23 +1,11 @@
 export default function register(server, options, next) {
 
-  const word = require('./word')(server);
+  const word = require('./nonom')(server);
 
   server.route({
     method: 'POST',
-    path: '/slackpost',
-    handler: word.slackpost
-  });
-
-  server.route({
-    method: 'GET',
-    path: '/word',
-    handler: word.getAll
-  });
-
-  server.route({
-    method: 'GET',
-    path: '/word/{word}',
-    handler: word.get
+    path: '/nonom',
+    handler: word.nonom
   });
 
   next();

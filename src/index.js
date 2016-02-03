@@ -1,7 +1,4 @@
 import Glue from 'glue';
-import debug from 'debug';
-
-const logger = debug('http');
 
 const manifest = {
   connections: [{
@@ -15,8 +12,7 @@ const manifest = {
           prefix: '/api'
         }
       }]
-    },
-    {'./db': null}
+    }
   ]
 };
 
@@ -31,6 +27,6 @@ Glue.compose(manifest, options, (err, server) => {
   }
   server.start(() => {
 
-    logger('Hapi days!');
+    console.log('Hapi days!');
   });
 });
